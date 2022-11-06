@@ -71,7 +71,7 @@ It will take time for preflight check, pull images, etc...
 ## After installation
 When preflight done, check if all kubernetes resources are up by command `microk8s kubectl get all -n gitpod`
 
-Make sure all resources are up. If something wrong, feel free to share it to me on Issues. 
+Make sure all resources are up.
 ## For proxy service solution
 ### 1. If you have vps and public ip attached to it. 
 
@@ -199,3 +199,6 @@ Using browser to access your gitpod domain, see your successful installation.
 ### 1. Blank page when open workspace.
 There is a pod that failed to run. And `microk8s kubectl describe <pod>`. There is error on `/var/snap/microk8s/common/var/lib/kubelet/seccomp` folder.
 The root cause is seccomp folder not in this folder. I'm not sure about that but generally it is. I checked that seccomp folder is located in `/var/lib/kubelet/seccomp`. We can create symbolic link folder from `/var/lib/kubelet/seccomp` to `/var/snap/microk8s/common/var/lib/kubelet/seccomp` by running `ln -s /var/lib/kubelet/seccomp /var/snap/microk8s/common/var/lib/kubelet/seccomp`
+
+
+### If something went wrong, feel free to share it to me on Issues. 
