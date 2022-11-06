@@ -74,6 +74,19 @@ When preflight done, check if all kubernetes resources are up by command `microk
 Make sure all resources are up.
 ## For proxy service solution
 ### 1. If you have vps and public ip attached to it. 
+Please check if public ip is detected by vps by running command `ifconfig | grep <your-public-ip>`
+
+If not shown anything, please follow solution 2.
+ 
+Else, follow next step.
+
+Remember the default service type? Yes, it is LoadBlancer. When you select LoadBalancer service type, Kubernetes will try to allocate public ip to assign for this load balancer. You can check by running `microk8s kubectl get services -n gitpod`, notice service `proxy` with type LoadBalancer, external ip column is in pending state, and pending forever if you do nothing :).
+
+Microk8s has a addon named metallb for handle this problem.
+You can enable this addon by running `microk8s enable metallb`. It will ask you to specify ip range, you can write `<your-public-ip>-<your-public-ip>`. This range only allow one ip.
+Maybe, this action fails sometimes, please retry by `microk8s disbale metallb` and `microk8s enable metallb`
+
+When it done, re-run `microk8s kubectl get services -n gitpod`. If that external ip now is `<your-public-ip>`, it correct.
 
 ### 2. If you have vps and public ip only send traffic to it using NAT.
 FYI, I have a VPS and public ip. When I run a nginx server bind port 80 in this vps. I can use public ip to access this nginx. But in vps, run `ifconfig`, this public ip isn't listed. So the magic is the public ip is owned by another machine, and this machine will route network traffic by using NAT. NAT will re-transalate the public ip to local ip of my vps.
